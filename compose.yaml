@@ -1,0 +1,31 @@
+version: '3.5'
+
+services:
+  backend:
+    container_name: app-chat-api
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: production
+    env_file:
+      - ./server/.env
+    environment:
+      - PORT=80
+    image: app-chat-api
+    ports:
+      - '${API_PORT_FORWARD:-5555}:80'
+
+  fronend:
+    container_name: app-chat-ui
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: production
+        PORT: 3000
+    env_file:
+      - .env
+    image: app-chat-ui
+    ports:
+      - '${UI_PORT_FORWARD:-80}:3000'
